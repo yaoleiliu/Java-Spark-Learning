@@ -1,5 +1,5 @@
 # 基本程序设计结构
-## 一、一个简单的Java应用程序
+## 1.一个简单的Java应用程序
 ```Java
 public class FirstSample {
   public static void main(String[ args]){
@@ -16,7 +16,7 @@ public class FirstSample {
 * //。其注释内容从//开始到本行结尾
 * /* ... */。将一段比较长的注释括起来
 
-## 二、数据类型
+## 2.数据类型
 在Java中，一共有8种基本类型，其中，有4种整型、2种浮点类型、1种用于表示Unicode编码的字符类型char和一种用于表示真值的boolean类型。</br>
 
 ### 2.1整型
@@ -62,7 +62,7 @@ char类型的字面量值要用单引号括起来。例如：'A'是编码值为6
 ### 2.4 boolean类型
 boolean（布尔）类型有两个值：false和true，用来判定逻辑条件。整型和布尔值之间不能进行相互转换。
 
-## 3 变量、常量和枚举
+## 3.变量、常量和枚举
 变量名必须是一个以字母开头并由字母或数字构成的序列。变量中所有的字符都是有意义的，并且大小写敏感。变量名的长度基本上没有限制。在Java中，变量的声明尽可能靠近变量第一次使用的地方，这是一种良好的程序编写风格。</br>
 在Java中，利用关键字final指示常量：</br>
 ```Java
@@ -100,7 +100,7 @@ Size s = Size.MEDIUM;
 ``` 
 Size类型的变量只能存储这个类型生命中给定的某个枚举值或者null值，null表示这个变量没有设置任何值。
 
-## 4 字符串
+## 4.字符串
 Java没有内置的字符串类型，而是在Java类库中提供了一个预定义类，叫做String。每个用双引号括起来的字符串都是String类的一个实例：</br>
 ```Java
 String e = ""; // an enpty string 
@@ -108,3 +108,65 @@ String greeting = "Hello";
 ```
 
 ### 4.1 常用方法
+```java
+string s = greeting.substring(0,3); // substring可以从一个较大的字符串提取出一个子串Expletive
+
+/* Java允许使用+号连接两个字符串，
+当将一个字符串与一个非字符串的值进行拼接时，后者被转换成字符串。
+*/
+String expletive = "Expletive"; String PG13 = "deleted"; String message = expletive + PG13;
+
+//可以用equals方法检测两个字符串相等，不能使用==来检测两个字符串是否相等
+s.equals(t);
+"Hello".equals(greeting);
+"Hello".equalsIgnoreCase("hello");不区分大小写地检测两个字符串是否相等
+
+//空串是长度为0的字符串，可以用以下代码检测一个字符串是否为空
+if(str.length()==0) 
+或
+if(str.equals(""))
+
+if(str==null) //检测一个字符串是否为null
+if(str!=null && str.length()!=0) //检查一个字符串既不是空串也不是null
+
+//如果需要用许多小段的字符串构建一个字符串，应该按照如下步骤进行
+1.构建一个空的字符串构建起：
+StringBuilder builder = new StringBuilder();
+
+2.当每次需要添加一部分内容时，调用append方法
+builder.append(ch);
+builder.append(str);
+
+3.需要构建字符串时，就调用toString方法，可以得到一个String对象：
+String completedString = builder.toString();
+
+//可以使用静态的String.format方法创建一个格式化的字符串：
+String message = String.format("Hello, %s. Next year, you will be %d", name, age);
+```
+
+## 5.数组
+### 5.1 大数值
+如果基本的整数和浮点数精度不能够满足需求，那么可以使用java.math包中的两个很有用的类：BigInteger和BigDecimal。这两个类可以处理包含任意长度数字序列的数值。BigInteger类实现了任意精度的整数运算，BigDecimal实现了任意精度的浮点数运算。</br>
+使用静态的valueOf方法可以将普通的数值转换为大数值：</br>
+```Java
+BigInteger a = BigInteger.valueOf(100);
+```
+遗憾的是，这里不能使用人们熟悉的算术运算符（如+和\*）处理大数值。而需要使用大数值类中的add和multiply方法：</br>
+```Java
+BigInteger c = a.add(b);
+BigInteger d = c.multiply(b.add(BigInteger.valueOf(2)));
+```
+
+### 5.2 数组
+创建一个数组：</br>
+```Java
+int[] a = new int[100];
+```
+创建一个数字数组时，所有元素都初始化为0。boolean数组的元素会初始化为false。对象数组的元素则初始化为一个特殊值null，表示这些元素还为存放任何对象。</br>
+
+数组拷贝：</br>
+在Java中，允许将一个数组变量拷贝给另一个数组变量。这时，`两个变量将引用同一个数组：`</br>
+```Java
+int[] luckyNumbers = smallPrimes;
+luckyNumbers[5] = 12;
+```
