@@ -1,2 +1,2 @@
 # Java-Spark-Learning
-Java、Spark持续学习
+Java Api中文手册：http://www.matools.com/api/java8
