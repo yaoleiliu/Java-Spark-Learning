@@ -170,3 +170,16 @@ int[] a = new int[100];
 int[] luckyNumbers = smallPrimes;
 luckyNumbers[5] = 12;
 ```
+
+Java有一种功能很强的循环结构，可以用来依次处理数组中的每个元素而不必为指定下标值而分心。</br>                                             
+```Java
+for(variable: collection) statement
+```
+定义一个变量用于暂存集合中的每一个元素，并执行相应的语句。collection这一表达式必须是一个数组或者一个实现了Iterable接口的类对象。</br>
+
+要想对数值型数组进行排序，可以使用Arrays类中的sort方法：</br>
+```Java
+int[] a = new int[100];
+Arrays.sort(a)
+```
+这个方法使用了优化的快速排序方法。快速排序方法对于大多数数据集合来说都是效率非常高的。
