@@ -136,3 +136,23 @@ Java语言规范要求equals方法具有下面一些特性：</br>
 ```java
 if(this==otherObject) return true;
 ```
+这条语句只是一个优化，因为计算这个等式要比一个一个地比较类中的域所付出的代价小得多。</br
+3) 检测otherObject是否为null，如果为null，返回false。</br>
+
+```java
+if(otherObject==null) return false;
+```
+
+4) 比较this与otherObject是否属于同一个类。如果equals的语义在每个子类中有所改变，就使用getClass检测：</br>
+```java
+if(getClass()!=otherClass.getClass()) return false;
+```
+如果所有的子类都拥有统一的语义，就使用instanceof检测：</br>
+```java
+if(!(otherObject instanceof ClassName)) return false;
+```
+5) 将otherObject转换为相应的类类型变量：</br>
+```java
+ClassName other = (ClassName)otherObject;
+```
+6) 
