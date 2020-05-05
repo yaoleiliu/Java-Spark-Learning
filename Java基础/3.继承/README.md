@@ -30,3 +30,6 @@ public Manager(String name, double salary, int year, int month, int day){
 一个对象变量可以指示多种实际类型的现象称为`多态`。在运行时能够自动地选择调用哪个方法的现象称为`动态绑定`。ManagerTest.java文件展示了多态的使用方法。</br>
 
 ### 1.2 继承层次
+在一个公共超类派生出来的所有类的集合被称为`继承层次`。在继承层次中，从某个特定的类到其祖先的路径被称为该类的`继承链`。</br>
+在Java程序设计语言中，对象变量是多态的。一个Employee变量既可以引用一个Employee类对象，也可以引用Employee类的任何一个子类的对象。
+
