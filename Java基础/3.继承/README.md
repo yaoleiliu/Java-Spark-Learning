@@ -125,3 +125,13 @@ public class Manager extends Employee{
 Java语言规范要求equals方法具有下面一些特性：</br>
 * 自反性。对于任何非空引用x，x.equals(x)应该返回true</br>
 * 对称性。对于任何引用x和y，当且仅当y.equals(x)返回true，x.equals(y)也应该返回true</br>
+* 传递性。对于任何引用x、y和z，如果x.equals(y)返回true，y.equals(z)返回true，则x.equals(z)也返回true</br>
+* 一致性。如果x和y引用的对象没有发生变化，反复调用x.equals(y)应该返回同样的结果</br>
+* 对于任意的非空引用x,x.equals(null)应该返回false</br>
+</br>
+下面给出一些编写equals方法的建议：</br>
+1) 显示参数命名为otherObject，稍后需要将它转换成另一个叫做other的变量</br>
+2) 检测this与otherObject是否引用同一个对象：
+```java
+if(this==otherObject) return true;
+```
