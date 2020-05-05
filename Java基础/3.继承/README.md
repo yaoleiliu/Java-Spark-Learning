@@ -247,3 +247,37 @@ System.out.println(2*n); // 抛异常
 ```
 2.如果在一个条件表达式中混合使用Integer和Double类型，Integer值就会拆箱，提升为Double，再装箱为Double。</br>
 3.装箱和拆箱是编译器认可的，而不是虚拟机。编译器在生成类的字节码时，插入必要的方法调用。虚拟机只是执行这些字节码。
+
+## 五、参数数量可变的方法
+在Java SE 5.0以前的版本中，每个Java方法都有固定数量的参数。然而，现在的版本提供了可以用可变的参数数量调用的方法。如下所示：</br>
+```java
+public class PrintStream{
+    public PrintStream print(String fmt, Object...args){return format(fmt, args);}
+}
+```
+这里的省略号...是java代码的一部分，它表明这个方法可以接受任意数量的对象。</br>
+用户也可以自定义可变参数的方法，并将参数指定为任意类型，甚至是基本类型。下面是一个简单示例，其功能为计算若干个数值的最大值：</br>
+```java
+public static double max(double...values){
+    double largest = DOUBLE.NEGATIVE_INFINITY;
+    for(double v: values) if(v>largest) largest=v;
+    return largest'
+}
+```
+
+## 六、枚举类
+```java
+public enum Size{SMALL, MEDIUM, LARGE, EXTRA_LARGE};
+```
+在比较两个枚举类型的值时，永远不需要调用equals，而直接使用“==”就可以了。如果需要的话，可以在枚举类型中添加一些构造器、方法和域。当然，构造器只是在构造枚举常量的时候被调用。</br>
+```java
+public enum Size{
+    SMALL("S"), MEDIUM("M"), LARGE("L"), EXTRA_LARGE("XL");
+    private String abbreviation;
+    
+    private Size(String abbreviation){this.abbreviation=abbreviation;}
+    public String getAbbreviation(){return abbreviation;}
+}
+```
+所有的枚举类型都是Enum类的子类。它们继承了这个类的许多方法。其中最有用的是toString，这个方法返回枚举常量名。</br>
+enums包下的程序展示了枚举类的使用。
