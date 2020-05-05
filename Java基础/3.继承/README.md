@@ -161,3 +161,27 @@ ClassName other = (ClassName)otherObject;
 Equals与hashCode的定义必须一致：如果x.equals(y)返回true，那么x.hashCode()就必须与y.hashCode()具有相同的值。例如，如果用定义的Employee.equals比较雇员ID，那么hashCode方法就需要散列ID，而不是雇员的姓名或存储地址。</br>
 
 ### 2.5 toString方法
+绝大多数（但不是全部）的toString方法都遵循这样的格式：类的名字，随后是一对方括号括起来的阈值。下面是Employee类中的toString方法的实现：</br>
+```java
+public String toString(){
+    return getClass().getName()  
+        + "[name=" + name
+        + ",salary=" + salary
+        + ",hireDay=" + hireDay
+        + "]";
+}
+```
+随处可见toString方法的主要原因是：只要对象与一个字符串通过操作符“+”连接起来，Java编译就会自动地调用toString方法，以便获得这个对象的字符串描述。如下所示：</br>
+```java
+Point p = new Point(10,20);
+String message = "The current position is" + p;
+```
+如果x是任意一个对象，并调用：</br>
+```java
+System.out.println(x);
+```
+println方法会直接调用x.toString()，并打印输出得到相应的字符串。</br>
+Object类定义了toString方法，用来打印输出对象所属的类名和散列码。</br>
+equals包下的程序展示了equals方法的使用。
+
+## 三、泛型数组列表
