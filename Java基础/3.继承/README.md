@@ -153,4 +153,11 @@ if(!(otherObject instanceof ClassName)) return false;
 ```java
 ClassName other = (ClassName)otherObject;
 ```
-6) </br>
+6.现在开始对所有需要比较的域进行比较了，使用==比较基本类型域，使用equals比较对象域。如果所有域都匹配，就返回true;否则，返回false。</br>
+
+### 2.4 hashCode方法
+`散列码`是由对象导出的一个整型值。散列码是没有规律的。如果x和y是两个不同的对象，x.hashCode()与y.hashCode()基本上不会相同。</br>
+如果重新定义equals方法，就必须重新定义hashCode方法，以便用户可以将对象插入到散列表中。</br>
+Equals与hashCode的定义必须一致：如果x.equals(y)返回true，那么x.hashCode()就必须与y.hashCode()具有相同的值。例如，如果用定义的Employee.equals比较雇员ID，那么hashCode方法就需要散列ID，而不是雇员的姓名或存储地址。</br>
+
+### 2.5 toString方法
