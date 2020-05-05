@@ -132,6 +132,7 @@ Java语言规范要求equals方法具有下面一些特性：</br>
 下面给出一些编写equals方法的建议：</br>
 1) 显示参数命名为otherObject，稍后需要将它转换成另一个叫做other的变量</br>
 2) 检测this与otherObject是否引用同一个对象：</br>
+
 ```java
 if(this==otherObject) return true;
 ```
