@@ -289,3 +289,28 @@ enums包下的程序展示了枚举类的使用。
 3.实现通用的数组操作代码</br>
 4.利用Method对象，这个对象很像C++中的指针</br>
 ### 7.1 Class类
+在程序运行期间，Java运行时系统始终为所有的对象维护一个被称为运行时的类型标识。这个信息跟踪着每个对象所属的类。虚拟机利用运行时类型信息选择相应的方法执行。可以通过专门的Java类访问这些信息。保存这些信息的类被称为Class。Object类中的getClass()方法将会返回一个Class类型的实例.一个Class对象表示一个特定类的属性。</br>
+获得Class对象的三种方法：</br>
+```java
+Class cl = e.getClass();
+Class cl = Class.forName(className);
+Class cl = int.class;
+```
+可以利用newInstance()方法动态地创建一个类的实例：</br>
+```java
+String s = "java.util.Random";
+Object m = Class.forName(s).newInstance();
+```
+反射机制最重要的内容就是检查类的结构。那么它是如何进行的呢？</br>
+在java.lang.reflect包中有三个类Field、Mothod和Constructor分别用于描述类的域、方法和构造器。这三个类都有一个叫做getName的方法，用来返回项目的名称。Field类有一个getType方法，用来返回描述域所属类型的Class对象。Method和Constructor类有能够报告参数类型的方法，Method类还有一个可以报告返回类型的方法。这三个类还有一个叫做getModifiers的方法，它将返回一个整型数值，用不同的位开关描述public和static这样的修饰符使用状况。另外，还可以利用java.lang.reflect包中的Modifier类的静态方法分析getModifier返回的整型数值。例如，可以使用Modifier类中isPublic、isPrivate或isFinal判断方法或构造器是否是public、private或final。我们需要做的工作就是调用Modifier类的相应方法，并对返回的整型数值进行分析，另外，还可以利用Modifier.toString方法将修饰符打印出来。</br>
+Class类中的getFields、getMethods和getConstructors方法将分别返回类提供的public域、方法和构造器数组，其中包括超类的公有成员。Class类的getDeclareFields、getDeclareMethods和getDeclareConstructors方法将分别返回类中声明的全部域、方法和构造器，其中包括私有和受保护成员，但不包括超类的成员。</br>
+reflection包下的程序展示了反射机制的运用。
+
+## 八、继承的设计技巧
+1.将公共操作和域放在超类</br>
+2.不要使用受保护的域。有些程序员认为，将大多数的实例域定义为protected是一个不错的主意，只有这样，子类才能够在需要的时候直接访问它们。然而，pritected机制并不能带来更好的保护，原因主要有两点。第一，子类集合是无限制的，任何一个人都能够由某个类派生一个子类，并编写代码以直接访问protected的实例域，从而破坏了封装性。第二，在Java程序设计语言中，在同一个包中的所有类都可以访问protected域，而不管它是否为这个类的子类。</br>
+3.使用继承实现"is-a"关系</br>
+4.除非所有继承的方法否有意义，否则不要使用继承</br>
+5.在覆盖方法时，不要改变预期的星星</br>
+6.使用多态而非类型信息</br>
+7.不要过多地使用反射。反射机制使得程序员可以在运行时查看域和方法，让人们编写出更具有通用性的程序。这种功能对于编写系统程序来说极其实用，但是通常不适合编写应用程序。反射是很脆弱的，即编译器很难帮助人们发现程序中的错误，因此只有在运行时才能够发现错误并导致异常
