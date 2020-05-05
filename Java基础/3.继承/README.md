@@ -109,3 +109,19 @@ Object obj = new Employee("Harry Hacker", 35000);
 ```
 ### 2.1 equals方法
 Object类中的equals方法用于检测一个对象是否等于另外一个对象。在Object类中，这个方法将判断两个对象是否具有相同的引用。如果两个对象具有相同引用，它们一定是相等的。</br>
+在子类中定义equals方法时，首先调用超类的equals。如果检测失败，对象就不可能相等，如果超类中的域都相等，就需要比较子类中的实例域。</br>
+```java
+public class Manager extends Employee{
+    ...
+    public boolean equals(Object otherObject){
+        if(!super.equals(otherObject)) return false;
+        Manager other = (Manager)otherObject;
+        return bonus==other.bonus;
+    }
+}
+```
+
+### 2.2 相等测试与继承
+Java语言规范要求equals方法具有下面一些特性：</br>
+* 自反性。对于任何非空引用x，x.equals(x)应该返回true</br>
+* 对称性。对于任何引用x和y，当且仅当y.equals(x)返回true，x.equals(y)也应该返回true</br>
