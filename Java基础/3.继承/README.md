@@ -130,19 +130,18 @@ Java语言规范要求equals方法具有下面一些特性：</br>
 * 对于任意的非空引用x,x.equals(null)应该返回false</br>
 </br>
 下面给出一些编写equals方法的建议：</br>
-1) 显示参数命名为otherObject，稍后需要将它转换成另一个叫做other的变量</br>
-2) 检测this与otherObject是否引用同一个对象：</br>
+1.显示参数命名为otherObject，稍后需要将它转换成另一个叫做other的变量</br>
+2.检测this与otherObject是否引用同一个对象：</br>
 
 ```java
 if(this==otherObject) return true;
 ```
 这条语句只是一个优化，因为计算这个等式要比一个一个地比较类中的域所付出的代价小得多。</br>
-3) 检测otherObject是否为null，如果为null，返回false。</br>
+3.检测otherObject是否为null，如果为null，返回false。</br>
 ```java
 if(otherObject==null) return false;
 ```
-
-4) 比较this与otherObject是否属于同一个类。如果equals的语义在每个子类中有所改变，就使用getClass检测：</br>
+4.比较this与otherObject是否属于同一个类。如果equals的语义在每个子类中有所改变，就使用getClass检测：</br>
 ```java
 if(getClass()!=otherClass.getClass()) return false;
 ```
@@ -150,8 +149,7 @@ if(getClass()!=otherClass.getClass()) return false;
 ```java
 if(!(otherObject instanceof ClassName)) return false;
 ```
-
-5) 将otherObject转换为相应的类类型变量：</br>
+5.将otherObject转换为相应的类类型变量：</br>
 ```java
 ClassName other = (ClassName)otherObject;
 ```
