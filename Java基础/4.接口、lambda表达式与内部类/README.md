@@ -170,4 +170,5 @@ clone方法是Object的一个Protected方法，这说明你的代码不能直接
 2) 重新定义clone方法，并指定public访问修饰符。</br>
 
 Cloneable接口是Java提供的一组标记接口之一。标记接口不包含任何方法，它唯一的作用就是允许在类查询中使用instanceof。</br>
-必须当心子类的克隆。例如，一旦为Employee类定义了clone方法，任何人都可以用它来克隆Manager对象。Employee克隆方法能完成工作吗？
+必须当心子类的克隆。例如，一旦为Employee类定义了clone方法，任何人都可以用它来克隆Manager对象。Employee克隆方法能完成工作吗？这取决于Manager类的域。在这里是没有问题的，因为bonus域是基本类型。但是Manager可能会有需要深拷贝或不可克隆的域。不能保证子类的实现者一定会修正clone方法让它正常工作。出于个原因，在Object类中clone方法声明为protected。不过，如果你希望类用户调用clone，就不能这么做。</br>
+clone文件夹下的程序展示了对象克隆.</br>
