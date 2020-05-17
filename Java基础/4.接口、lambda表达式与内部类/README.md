@@ -132,4 +132,42 @@ class Student implements Person, Named{
 }
 ```
 
-### 1.6 接口与回调
+## 二、接口示例
+### 2.1 接口与回调
+`回调`是一种常见的程序设计模式。在这种模式中，可以指出特定事件发生时应该采取的动作，例如，可以指出按下鼠标或选择某个菜单项时应该采取什么行动。timer文件夹下的程序展示了这部分内容的使用。
+
+### 2.2 Comparator接口
+String类默认已经实现了Comparable<String>，而且String.compareTo方法可以按字典顺序比较字符串。现在我们假设希望按照长度递增的顺序对字符串进行排序，而不是按照字典顺序进行排序。肯定不能让String类用两种不同的方式实现compareTo方法，更何况，String类也不应该改我们来修改。要处理这种情况，Arrays.sort方法还有第二个版本，有一个数组和一个比较器作为参数，比较器是实现了Comparable接口的类的实例。</br>
+```java
+public interface Comparator<T>{
+    int compare(T first, T second);
+}
+```
+要按长度比较字符串，可以如下定义一个实现Comparator<String>的类：</br>
+```java
+class LengthComparator implements Comparator<String>{
+    public int compare(String first, String second){
+        return first.length() - second.length();
+    }
+}
+```
+
+要对一个数组排序，需要为 Arrays.sort方法传入一个LengthComparator对象：</br>
+```java
+String[] friends = {"Peter", "Paul", "Mary"};
+Arrays.sort(friends, new LengthComparator());
+```
+
+### 2.3 对象克隆
+clone方法是Object的一个Protected方法，这说明你的代码不能直接调用这个方法。只有Employee类可以克隆Employee对象。这个限制是有原因的，对于Object类来说，它对于这个对象一无所知，所以只能逐个域地进行拷贝。如果对象中的所有数据域都是数值或其它基本类型，拷贝这些域没有任何问题。但是如果对象包含子对象的引用，拷贝域就会得到相同子对象的另一个引用，这样一来，原对象与克隆的对象仍然会共享一些信息。</br>
+对于每一个类，需要确定：</br>
+1) 默认的clone方法是否满足要求;</br>
+2) 是否可以在可变的对象上调用clone来修补默认的clone方法;</br>
+3) 是否不该使用clone方法。</br>
+
+实际上第3个选项是默认选项。如果选择第1项或第2项，类必须：</br>
+1) 实现Cloneable接口;</br>
+2) 重新定义clone方法，并指定public访问修饰符。</br>
+
+Cloneable接口是Java提供的一组标记接口之一。标记接口不包含任何方法，它唯一的作用就是允许在类查询中使用instanceof。</br>
+必须当心子类的克隆。例如，一旦为Employee类定义了clone方法，任何人都可以用它来克隆Manager对象。Employee克隆方法能完成工作吗？
