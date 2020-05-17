@@ -83,3 +83,24 @@ public interface Powered extends Moveable{
     double SPEED_LIMIT = 95;
 }
 ```
+
+### 1.3 接口与抽象类
+有了抽象类，为什么还需要引入接口的概念呢？使用抽象类表示通用属性存在这样一个问题：每个类只能扩展于一个类，但每个类却可以实现多个接口。
+```java
+class Employee extends Person, Comparable
+```
+有些程序设计语言允许一个类有多个超类，例如C++。这种特性称作多重继承。而java的设计者选择了不支持多继承，其主要原因是多重继承会让语言变得非常复杂，效率也会降低。
+
+### 1.4 默认方法
+可以为接口方法提供一个默认实现，必须用default修饰符标记这样一个方法。</br>
+```java
+public interface MouseListener{
+    default void mouseClicked(MouseEvent event){}
+}
+```
+默认方法一个重要用途是“接口演化”。以Collection接口为例，这个接口作为Java的一部分已经有很多年了。假设很久以前你提供了这样一个类：</br>
+```java
+public classBag implements Collection
+```
+后来在Java SE 8中，又为这个接口增加了一个stream方法。假设stream方法不是一个默认方法，那么Bag类将不能编译，因为它没有实现这个新方法。为借口增加一个非默认方法不能保证“源代码兼容”。</br>
+假设不重新编译这个类，而只是使用原先的一个包含这个类的JAR文件，这个类仍能够正常加载，尽管没有这个新方法，程序仍然可以正常构造Bag实例，不会有意外发生。不过，如果程序在一个Bag实例上调用了stream方法，就会出现一个AbstractMethodError。</br>
