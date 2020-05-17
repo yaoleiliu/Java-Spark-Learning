@@ -109,4 +109,27 @@ public classBag implements Collection
 ### 1.5 解决默认方法冲突
 如果先在一个接口中将一个方法定义为默认方法，然后又在超类或另一个接口中定义了同样的方法，会发生什么情况？Java解决这种二义性的规则如下：</br>
 1) 超类优先。如果超类提供了一个具体方法，同名而且具有相同参数类型的默认方法会被忽略。</br>
-2) 
+2) 接口冲突。如果一个超接口提供了一个默认方法，另一个接口提供了一个同名而且参数类型相同的方法，必须覆盖这个方法来解决冲突。</br>
+
+来看一下第二个规则，考虑另一个包含getName方法的接口:</br>
+```java
+interface Named{
+    default String getName() {return getClass().getName() + "_" + hasCode();}
+}
+```
+
+假设一个类同时实现了着两个接口会怎么样呢？</br>
+```java
+class Student implements Person, Names{
+    ...
+}
+```
+
+类会继承Person和Named接口提供的两个不一致的getName方法。并不是从中选择一个，Java编译器会报告一个错误，让程序员解决这个二义性。只需要在Student类中提供一个getName方法。在这个方法中。可以选择两个冲突方法中的一个。如下所示：</br>
+```java
+class Student implements Person, Named{
+    public String getName() {return Person.super.getName();}
+}
+```
+
+### 1.6 接口与回调
