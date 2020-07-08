@@ -246,3 +246,53 @@ Arrays.sort(strings, String::compareToIgnoreCase)
 * object::instanceMethod
 * Class::staticMethod
 * Class::instanceMethod
+在前两种情况中，方法引用等价于提供方法参数的lambda表达式。前面已经提到过，System.out::println等价于x->System.out.println(x)。类似地，Math::pow等价于(x, y)->Math.pow(x, y)。</br>
+对于第三种情况，第1个参数会成为方法的目标，例如String::compareToIgnoreCase等同于(x, y)->x.compareToIgnoreCase(y)。
+
+### 3.3 构造器引用
+构造器引用与方法引用比较类似，只不过方法名为new。例如，Person::new是Person构造器的一个引用。哪一个构造器呢，取决于上下文。假设你有一个字符串列表，可以把它转换为一个Person对象数组，为此，要在各个字符串上调用构造器。调用如下：</br>
+```java
+ArrayList<String> names = ...;
+Stream<Person> stream = names.stream().map(Person::new);
+list<Person> people = stream.collect(Collectors.tolist());
+```
+
+### 3.4 变量作用域
+在lambda表达式中，只能引用值不会改变的变量，例如，下面的做法是不合法的。</br>
+```java
+public static void countDown(int start, int delay){
+    ActionListener listener = event ->
+    {
+        start--;
+        System.out.println(start);
+    }
+    new Timer(delay, listener).start();
+}  
+```
+之所以有这个限制是有原因的。如果在lambda表达式中改变变量，并发执行多个动作时就会不安全。另外，如果在lambda表达式中引用变量，而这个变量可能在外部改变，这也是不合法的。例如，下面就是不合法的：</br>
+```java
+public static void repeat(String text, int count){
+    for(int i=1; i<=count; i++){
+        ActionListener listener = event ->
+        {
+            System.out.println(i + ": " text);
+        };
+        
+        new Timer(1000, listener).start();
+    }
+}
+```
+这里有一条规则：lambda表达式中捕获的变量必须实际上是最终变量。实际上的最终变量是指，这个变量初始化之后就不会再为它赋予新值。在这里，text总是指示同一个String对象，所以捕获这个变量是合法的。不过i的值会改变，因此，不能捕获i。</br>
+在lambda表达式中声明一个与局部变量同名的参数或局部变量是不合法的。</br>
+在一个lambda表达式中使用this关键字时，是指创建这个lambda表达式的方法的this参数。例如:<br>
+```java
+public class Application(){
+    public void init(){
+        ActionListener listener = event-> 
+          {
+              System.out.println(this.toString());
+          }
+    }
+}
+```
+表达式this.toString()会调用Application对象的toString方法，而不是ActionListener实例的方法。
