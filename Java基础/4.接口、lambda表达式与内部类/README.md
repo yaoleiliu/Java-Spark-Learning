@@ -180,3 +180,69 @@ clone文件夹下的程序展示了对象克隆.</br>
 (String first, String second)
     ->first.length() - second.length()
 ```
+如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在{}中，并包含显示的return语句。例如：</br>
+```java
+(String first, String second) ->
+  {
+    if(first.length() < second.length()) return -1;
+    else if(first.length > second.length()) return 1;
+    else return 0;
+  }
+```
+即使lambda表达式没有参数，仍然要提供空括号，就像无参数方法一样：</br>
+```java
+() -> {for(int i=100; i>=0; i--) System.out.println(i);}
+```
+如果可以推导出一个lambda表达式的参数类型，则可以忽略其类型。例如：</br>
+```java
+Comparator<String> comp
+  =(first, second) -> first.length() - second.length();
+```
+如果方法只有一个参数，而且这个参数的类型可以推导得出，那么甚至可以省略小括号：
+```java
+ActionListener listener = event ->
+  System.out.println("The time is" + new Date());
+```
+无需指定lambda表达式的返回类型。lambda表达式的返回类型总是会由上下文推导得出。例如：</br>
+```java 
+（String first, String second）-> first.length() - second.length();
+```
+
+### 3.1 函数式接口
+对于只有一个抽象方法的接口，需要这种接口的对象时，就可以提供一个lambda表达式。这种接口称为`函数式接口`。</br>
+来看一下Arrays.sort方法，它的第二个参数需要一个Comparator实例，Comparator就是只有一个方法的接口，所以可以提供一个lambda表达式。</br>
+```java
+Arrays.sort(words,
+  (first, second) -> first.length() - second.length());
+```
+在底层，Arrays.sort方法会接收实现了Comparator<String>的某个类的对象。在这个对象上调用compare方法会执行这个lambda表达式的体。lambda表达式可以转换为接口，这一点让lambda表达式很有吸引力。</br>
+java.util.function包中有一个尤其有用的接口Predicate：</br>
+```java
+public interface Predicate<T>
+{
+  boolean test(T t);
+  // Additional default and static methods
+}
+```
+ArraysList类有一个removeIf方法，他的参数就是一个Predicate。这个接口专门用来传递lambda表达式。例如，下面的语句将从一个数组列表删除所有的null值。</br>
+```java
+list.removeIf(e -> e==null);
+```
+
+### 3.2 方法引用
+假设希望只要出现一个定时器事件就打印这个事件对象，可以这么调用：</br>
+```java
+Timer t = new Timer(1000, event->System.out.println(event));
+```
+但是，如果直接把println方法传递到Timer构造器就好了，具体方法如下：</br>
+```java
+Timer t = new Timer(1000, System.out::println);
+```
+再来看一个例子，假设你想对字符串排序，而不考虑字母的大小写。可以传递以下方法表达式：</br>
+```java
+Arrays.sort(strings, String::compareToIgnoreCase)
+```
+从这些例子中可以看出，要用::操作符分割方法名与对象或类名，主要有三种情况：</br>
+* object::instanceMethod
+* Class::staticMethod
+* Class::instanceMethod
