@@ -303,5 +303,34 @@ public class Application(){
 * 多次运行代码
 * 在算法的适当位置运行代码
 * 发生某种情况时执行代码
-* 只在必要时才运行代码
+* 只在必要时才运行代码</br>
 假设你想要重复一个动作n次，将这个动作和重复次数传递到一个repeat方法：</br>
+```java
+repeat(10, ()->System.out.println("Hello World!"));
+```
+要接受这个lambda表达式，需要选择一个函数式接口。在这里，我们使用Runnable接口：</br>
+```
+public static void repeat(int n, Runnable action){
+    for(int i=0; i<n; i++) action.run();
+}
+```
+Java中提供了许多类似于Runnable非常有用的函数式接口。
+
+### 3.6 再谈Comparator
+Comparator接口包含很多方便的静态方法来创建比较器。这些方法可以用于lambda表达式或方法引用。静态comparing方法提取一个“键提取器”函数，它将类型T映射为一个可比较的类型（如String）。对要比较的对象应用这个函数，然后对返回的键完成比较。例如，假设有一个Person对象数组，可以如下按名字对这些对象排序：</br>
+```java
+Arrays.sort(people, Comparator.comparing(Person::getName));
+```
+可以把比较器与thenComparing方法串起来。如：</br>
+```java
+Arrays.sort(people, Comparator.comparing(Person::getLastName)).thenComparing(Person::getFirstName);
+```
+如果两个人的姓相同，就会使用第二个比较器。</br>
+这些方法有很多变体形式，可以为comparing和theComparing方法提取的键指定一个比较器。例如，可以如下根据人名长度完成排序：</br>
+```java
+Arrays.sort(people, Comparator.comparing(Person::getName, (s, t)->Integer.compare(s.length(), t.length())));
+```
+另外，comparing和thenComparing方法都有变体形式，可以避免int,long,double值得装箱。要完成前一种操作，还有一种更容易的做法：</br>
+```java
+Arrays.sort(people, Comparator.comparingInt(p->p.getName().length()));
+```
