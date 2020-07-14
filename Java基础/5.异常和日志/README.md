@@ -15,3 +15,17 @@
 
 ### 1.1 异常分类
 在Java程序设计语言中，异常对象都是派生于Throwable类的一个实例。如果内置的异常类不能够满足需求，用户可以创建自己的异常类。</br>
+[异常层次](https://www.cnblogs.com/springlight/p/6718115.html)</br>
+Error类层次结构描述了Java运行时系统的内部错误和资源耗尽错误。应用程序不应该抛出这种类型的对象。如果出现了这样的内部错误，除了通告给用户，并尽力地使程序安全地终止外，再也无能为力了。这种情况很少出现。</br>
+派生于RuntimeException的异常通常包含下面几种情况：</br>
+* 错误的类型访问
+* 数组访问越界
+* 访问null指针</br>
+Java语言规范将派生于Error类或RuntimrException类的所有异常称为`非受查异常`，所有其他的异常称为受查异常。</br>
+
+### 1.2 声明受查异常
+如果遇到了无法处理的情况，那么Java的方法可以抛出一个异常。这个道理很简单：一个方法不仅需要告诉编译器将要返回什么值，还要告诉编译器有可能发生什么错误。方法应在其首部声明所有可能抛出的异常：</br>
+```java
+public FileInputStream(String name) throws FileNotFoundException
+```
+这个声明表示这个构造器将根据给定的String参数产生一个FileInputStream对象，但也有可能抛出一个FileNotFoundException异常。如果发生了这种糟糕情况，构造器将不会初始化一个新的FileInputStream对象，而是抛出一个FileNotFoundException类对象。</br>
