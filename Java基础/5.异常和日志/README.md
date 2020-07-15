@@ -29,3 +29,28 @@ Java语言规范将派生于Error类或RuntimrException类的所有异常称为`
 public FileInputStream(String name) throws FileNotFoundException
 ```
 这个声明表示这个构造器将根据给定的String参数产生一个FileInputStream对象，但也有可能抛出一个FileNotFoundException异常。如果发生了这种糟糕情况，构造器将不会初始化一个新的FileInputStream对象，而是抛出一个FileNotFoundException类对象。</br>
+在遇到下面四种情况时，应该抛出异常：</br>
+* 调用一个抛出受查异常的方法，例如，FileInputStream构造器
+* 程序运行过程中发现错误，并且利用throw语句抛出一个受查异常
+* 程序出现错误，例如，a[-1]=0会抛出一个ArrayIndexOutOfBoundsException这样的非受查异常
+* Java虚拟机和运行时库出现的内部错误</br>
+对于那些可能被他人使用的Java方法，应该根据异常规范，在方法的首部声明这个方法可能抛出的异常。</br>
+```java
+class MyAnimation {
+    ...
+    public Image loadImage(String s) throws IOException{
+        ...
+    }
+}
+```
+如果一个方法有可能抛出多个受查异常类型，那么就必须在方法的首部列出所有的异常类。每个异常类之间用逗号隔开：</br>
+```java
+class MyAnimation {
+    ...
+    public Image loadImage(String s) throws FileNotFoundException, EOFException {
+        ...
+    }
+}
+```
+但是，不需要声明从Error和RuntimeException继承的那些非受查异常。</br>
+如果在子类中覆盖了超类的一个方法，子类方法声明的受查异常不能比超类方法中声明的异常更通用（也就是说，子类方法中可以抛出更特定的异常，或者根本不抛出任何异常）。需要特别说明的是，如果超类方法
