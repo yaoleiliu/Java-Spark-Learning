@@ -85,4 +85,18 @@ try {
 这个规则也有一个例外。前面曾经提到过：如果编写一个覆盖超类的方法，而这个方法又没有抛出异常，那么这个方法就必须捕获方法代码中出现的每一个受查异常。不允许在子类的throws说明符中出现超过超类方法列出的异常类范围。
 
 ### 2.2 捕获多个异常
-在一个
+在一个try语句块中可以捕获多个异常类型，并对不同类型的异常做出不同的处理。</br>
+```java
+try {
+    code that might throw exception
+} catch (FileNotFoundException e) {
+    emergency action for missing files
+} catch (UnknownHostException e) {
+    emergency action for unknown hosts
+} catch (IOException e) {
+    emergency action for all other I/O problems
+}
+```
+
+### 2.3 再次抛出异常与异常链
+在
