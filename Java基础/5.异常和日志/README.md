@@ -53,4 +53,28 @@ class MyAnimation {
 }
 ```
 但是，不需要声明从Error和RuntimeException继承的那些非受查异常。</br>
-如果在子类中覆盖了超类的一个方法，子类方法声明的受查异常不能比超类方法中声明的异常更通用（也就是说，子类方法中可以抛出更特定的异常，或者根本不抛出任何异常）。需要特别说明的是，如果超类方法
+如果在子类中覆盖了超类的一个方法，子类方法声明的受查异常不能比超类方法中声明的异常更通用（也就是说，子类方法中可以抛出更特定的异常，或者根本不抛出任何异常）。需要特别说明的是，如果超类方法没有抛出任何受查异常，子类也不能抛出任何受查异常。</br>
+
+### 1.3 创建异常类
+在程序中，可能会遇到任何标准异常类都没有能够充分地描述清楚的问题。在这种情况下，创建自己的异常类就是一件顺理成章的事情了。我们需要做的只是定义一个派生于Exception的类，或者派生于Expection子类的类。定义的类应该包含两个构造器，一个是默认的构造器；另一个是带有详细信息的构造器。</br>
+```java 
+class FileFormatException extends IOSException {
+    public FileFormatException {}
+    public FileFormatException (String gripe){
+        super(gripe);
+    }
+}
+```
+
+## 二、捕获异常
+要想捕获一个异常，必须设置一个try/catch语句块。</br>
+```java
+try {
+    code
+    more code
+    more code
+} catch (ExceptionType e){
+    handler for this type 
+}
+```
+如果
