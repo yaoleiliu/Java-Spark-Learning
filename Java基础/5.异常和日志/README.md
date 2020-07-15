@@ -99,4 +99,18 @@ try {
 ```
 
 ### 2.3 再次抛出异常与异常链
-在
+在catch子句中可以抛出一个异常，这么做的目的是改变异常的类型。</br>
+```java
+try {
+    access the database
+} catch (SQLException e) {
+    Throwable se = new ServletException("database error");
+    se.initCause(e);
+    throw se;
+}
+
+当捕捉到异常时，就可以使用下面这条语句重新得到异常。
+
+Throwable e = se.getCause();
+```
+强烈建议使用这种包装技术。这样可以让用户抛出子系统中的高级异常，而不会丢失原始的异常细节。
