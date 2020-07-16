@@ -114,3 +114,25 @@ try {
 Throwable e = se.getCause();
 ```
 强烈建议使用这种包装技术。这样可以让用户抛出子系统中的高级异常，而不会丢失原始的异常细节。
+
+### 2.4 finally子句
+不管是否有异常被捕获，finally子句中的代码都被执行。在下面的例子中，程序将在所有情况下关闭文件。</br>
+```java 
+InputStream in = new FileInputStream(...);
+try {
+    //1
+    code that might throw exception
+    //2
+} catch (IOException e) {
+    //3
+    show error message
+    //4
+} finally {
+    //5 
+    in.close();
+}
+//6 
+```
+在上面这段代码中，有下列三种情况会被执行finally语句：</br>
+1) 代码没有抛出异常。在这种情况下，程序首先执行try语句块中的全部代码，然后执行finalky子句中的代码。随后，继续执行try语句块之后的第一条语句。也就是执行1、2、5、6处；</br>
+2) 抛出一个在catch子句中捕获的异常。在上面的示例中就是IOException异常。这种情况下，程序将执行try语句块中的所有代码，直到发生异常为止
