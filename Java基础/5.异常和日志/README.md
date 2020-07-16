@@ -173,3 +173,26 @@ try (Scanner in = new Scanner(new FileInputStream("/usr/share/dict/words"), "UTF
 ```
 不论这个块如何退出，in和out都会关闭。</br>
 如果try块抛出一个异常，而且close方法也抛出一个异常，就会带来一个难题。带资源的try语句可以很好地处理这种情况，原来的异常会重新抛出，而close方法抛出的异常会被“抑制”。这些异常将自动捕获，并由addSuppressed方法增加到原来的异常。如果对这些异常感兴趣，可以调用getSuppressed方法，它会得到从close方法抛出并被抑制的异常。
+
+### 2.6 分析堆栈轨迹元素
+`堆栈轨迹`是一个方法调用过程的列表，它包含了程序执行过程中方法调用的特定位置。可以调用Throwable类的printStackTrace方法访问堆栈轨迹的文本描述信息。</br>
+```java
+Throwable t = bew Throwable();
+StringWriter out = new StringWriter();
+t.printStackTrace(new PrintWriter(out));
+String description = out.toString();
+```
+一种更灵活的方式是使用getStackTrace方法，它会得到StackTraceElement对象的一个数组，可以在程序中分析这个对象数组：</br>
+```java
+Throwable t = new Throwable();
+StackTraceElement[] frames = t.getStackTrace();
+for(StackTraceElement frame: frames){
+    analyze frame
+}
+```
+StackTraceElement类含有能够获得文件名和当前执行的代码行号的方法，同时，还含有能够获得类名和方法名的方法。toString方法将产生一个格式化的字符串，其中包含所获得的信息。
+
+### 使用异常机制的技巧
+1) 异常处理不能代替简单的测试</br>
+2) 不要过分细化异常</br>
+3) 利用异常层次结构</br>
