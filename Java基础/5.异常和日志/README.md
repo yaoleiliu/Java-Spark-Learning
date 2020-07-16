@@ -136,4 +136,40 @@ try {
 在上面这段代码中，有下列三种情况会被执行finally语句：</br>
 1) 代码没有抛出异常。在这种情况下，程序首先执行try语句块中的全部代码，然后执行finalky子句中的代码。随后，继续执行try语句块之后的第一条语句。也就是执行1、2、5、6处；</br>
 2) 抛出一个在catch子句中捕获的异常。在上面的示例中就是IOException异常。这种情况下，程序将执行try语句块中的所有代码，直到发生异常为止。此时，将跳过try语句块中的剩余代码，转去执行与该异常匹配的catch子句中的代码，最后执行finally子句中的代码；</br>
-3) 代码抛出了异常，但这个异常不是由catch子句捕获的。在这种情况下，程序将执行try语句块中的所有语句，直到有异常抛出为止。此时，将跳过try语句块中的剩余代码，然后执行finally子句中的语句，并将异常抛给这个方法的调用者。
+3) 代码抛出了异常，但这个异常不是由catch子句捕获的。在这种情况下，程序将执行try语句块中的所有语句，直到有异常抛出为止。此时，将跳过try语句块中的剩余代码，然后执行finally子句中的语句，并将异常抛给这个方法的调用者。</br>
+try语句可以只有finally子句，而没有catch子句。例如，下面这条try语句：</br>
+```java
+InputStream in = ...;
+try {
+    code that might throw exceptions
+} finally {
+    in.close();
+}
+```
+无论在try语句块中是否遇到异常，finally子句中的in.close()语句都会被执行。</br>
+当finally语句中包含return语句时，将会出现一种意想不到的结果。假设利用return语句从try语句块中退出。在方法返回前，finally子句的内容将被执行。如果fininally语句也有一个return语句，这个返回值将会覆盖原始的返回值。</br>
+
+### 2.5 带资源的try语句
+带资源的try语句的最简形式为：</br>
+```java
+try (Resource res = ...) {
+    work with res 
+}
+```
+try块退出时，会自动调用res.close()。比如要读取一个文件中的所有单词：</br>
+```java
+try (Scanner in = new Scanner(new FileInputStream("/usr/share/dict/words")), "UTF-8") {
+    while(in.hasNext()){
+        System.out.println(in.next());
+    }
+}
+```
+这个块正常退出时，或者存在一个异常时，都会调用in.close()方法，就好像使用了finally块一样。还可以指定多个资源，例如：</br>
+```java
+try (Scanner in = new Scanner(new FileInputStream("/usr/share/dict/words"), "UTF-8"); PrintWriter out = new PrintWriter("out.txt")) {
+    while(in.hasNext())
+        out.println(in.next().toUpperCase());
+}
+```
+不论这个块如何退出，in和out都会关闭。</br>
+如果try块抛出一个异常，而且close方法也抛出一个异常，就会带来一个难题。带资源的try语句可以很好地处理这种情况，原来的异常会重新抛出，而close方法抛出的异常会被“抑制”。这些异常将自动捕获，并由addSuppressed方法增加到原来的异常。如果对这些异常感兴趣，可以调用getSuppressed方法，它会得到从close方法抛出并被抑制的异常。
